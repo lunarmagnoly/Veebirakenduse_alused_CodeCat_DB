@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import ToDoItem from './ToDoItem';
 import type { ToDo, Status, Priority, UpdatedProject } from './types';
-import { fetchTasks, createTask, deleteTask } from './services/tasksApi';
+import { fetchTasks, createTask, deleteTask, updateTask } from './services/tasksApi';
 
 // Peamine rakendus
 const App: React.FC = () => {
@@ -106,7 +106,19 @@ const App: React.FC = () => {
   };
 
   // Projekti andmete muutmine
-  const editToDo = (id: number, updatedProject: UpdatedProject) => {
+  const editToDo = async (id: number, updatedProject: UpdatedProject) => {
+    const currentTask = toDos.find(toDo => toDo.id === id);
+
+    if (!currentTask) return;
+
+    await updateTask(
+      id,
+      updatedProject.text ?? currentTask.text,
+      updatedProject.description ?? currentTask.description,
+      updatedProject.priority ?? currentTask.priority,
+      updatedProject.deadline ?? currentTask.deadline,
+      currentTask.status
+    );
     setToDos(
       toDos.map(toDo =>
         toDo.id === id
