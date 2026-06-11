@@ -24,6 +24,21 @@ export const mapApiTaskToToDo = (task: ApiTask): ToDo => ({
   favorite: false,
 });
 
+export const createTask = async (
+  title: string,
+  description: string,
+  priority: string,
+  dueDate: string
+) => {
+  await axios.post(API, {
+    title,
+    description,
+    status: "idea",
+    priority,
+    dueDate,
+  });
+};
+
 export const fetchTasks = async () => {
   const response = await axios.get<ApiTask[]>(API);
   return response.data.map(mapApiTaskToToDo);

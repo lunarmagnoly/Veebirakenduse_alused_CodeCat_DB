@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import ToDoItem from './ToDoItem';
 import type { ToDo, Status, Priority, UpdatedProject } from './types';
-import { fetchTasks } from './services/tasksApi';
+import { fetchTasks, createTask } from './services/tasksApi';
 
 // Peamine rakendus
 const App: React.FC = () => {
@@ -37,7 +37,7 @@ const App: React.FC = () => {
   const [newPriority, setNewPriority] = useState<Priority>('medium');
 
   // Uue projekti lisamine
-  const addToDo = () => {
+  const addToDo = async () => {
     if (!newTitle.trim()) return;
 
     const newProject: ToDo = {
@@ -51,6 +51,13 @@ const App: React.FC = () => {
       priority: newPriority,
       favorite: false,
     };
+
+    await createTask(
+      newTitle.trim(),
+      newDescription.trim(),
+      newPriority,
+      newDeadline
+    );
 
     setToDos([...toDos, newProject]);
 

@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 });
 
 // Kontrollime andmebaasi ühendust
-sql.connect(dbConfig)
+sql.connect(dbConfig as any)
   .then(() => {
     console.log("Andmebaasiga ühendus loodud");
   })
