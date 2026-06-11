@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import ToDoItem from './ToDoItem';
 import type { ToDo, Status, Priority, UpdatedProject } from './types';
-import { fetchTasks, createTask } from './services/tasksApi';
+import { fetchTasks, createTask, deleteTask } from './services/tasksApi';
 
 // Peamine rakendus
 const App: React.FC = () => {
@@ -70,7 +70,9 @@ const App: React.FC = () => {
   };
 
   // Projekti kustutamine
-  const deleteToDo = (id: number) => {
+  const deleteToDo = async (id: number) => {
+    await deleteTask(id);
+
     setToDos(toDos.filter(toDo => toDo.id !== id));
   };
 

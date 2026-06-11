@@ -39,6 +39,10 @@ export const createTask = async (
   });
 };
 
+export const deleteTask = async (id: number) => {
+  await axios.delete(`${API}/${id}`);
+};
+
 export const fetchTasks = async () => {
   const response = await axios.get<ApiTask[]>(API);
   return response.data.map(mapApiTaskToToDo);
