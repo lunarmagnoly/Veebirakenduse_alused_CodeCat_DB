@@ -52,4 +52,33 @@ router.post("/", async (req, res) => {
   }
 });
 
+// update
+router.put("/:id", async (req, res) => {
+  try {
+    const { title, description, status, priority, dueDate } = req.body;
+    const { id } = req.params;
+
+    await sql.query`
+      UPDATE Tasks
+      SET
+        Title = ${title},
+        Description = ${description},
+        Status = ${status},
+        Priority = ${priority},
+        DueDate = ${dueDate}
+      WHERE Id = ${id}
+    `;
+
+    res.json({
+      message: "Task uuendatud",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Taski uuendamine ebaõnnestus",
+    });
+  }
+});
+
 export default router;
