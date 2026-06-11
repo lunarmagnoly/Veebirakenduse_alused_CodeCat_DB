@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { ToDo, Status, UpdatedProject } from './types';
+
 
 // Andmed, mida App komponent saadab kaardile
 type Props = {

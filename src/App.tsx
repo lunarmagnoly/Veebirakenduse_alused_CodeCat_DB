@@ -1,12 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import ToDoItem from './ToDoItem';
 import type { ToDo, Status, Priority, UpdatedProject } from './types';
+import { fetchTasks } from './services/tasksApi';
 
 // Peamine rakendus
 const App: React.FC = () => {
   // Kõik projektid
   const [toDos, setToDos] = useState<ToDo[]>([]);
+
+    // Laeme projektid andmebaasist rakenduse käivitamisel
+  useEffect(() => {
+    const loadTasks = async () => {
+      try {
+        const tasks = await fetchTasks();
+        setToDos(tasks);
+      } catch (error) {
+        console.error('Projektide laadimine ebaõnnestus:', error);
+      }
+    };
+
+    loadTasks();
+  }, []);
 
   // Tume teema sisse või välja
   const [darkMode, setDarkMode] = useState(false);
