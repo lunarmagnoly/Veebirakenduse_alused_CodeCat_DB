@@ -81,4 +81,26 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// delete
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await sql.query`
+      DELETE FROM Tasks
+      WHERE Id = ${id}
+    `;
+
+    res.json({
+      message: "Task kustutatud",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Taski kustutamine ebaõnnestus",
+    });
+  }
+});
+
 export default router;
