@@ -55,7 +55,7 @@ router.post("/", async (req, res) => {
 // update
 router.put("/:id", async (req, res) => {
   try {
-    const { title, description, status, priority, dueDate } = req.body;
+    const { title, description, status, priority, dueDate, completedDate } = req.body;
     const { id } = req.params;
 
     await sql.query`
@@ -65,7 +65,8 @@ router.put("/:id", async (req, res) => {
         Description = ${description},
         Status = ${status},
         Priority = ${priority},
-        DueDate = ${dueDate}
+        DueDate = ${dueDate},
+        CompletedDate = ${completedDate}
       WHERE Id = ${id}
     `;
 

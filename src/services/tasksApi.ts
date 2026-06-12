@@ -10,6 +10,7 @@ export type ApiTask = {
   Status: string;
   Priority: string;
   DueDate: string | null;
+  CompletedDate: string | null;
 };
 
 export const mapApiTaskToToDo = (task: ApiTask): ToDo => ({
@@ -18,10 +19,12 @@ export const mapApiTaskToToDo = (task: ApiTask): ToDo => ({
   description: task.Description || "",
   imageUrl: "",
   deadline: task.DueDate ? task.DueDate.split("T")[0] : "",
-  completedDate: "",
   status: task.Status as Status,
   priority: task.Priority as Priority,
   favorite: false,
+  completedDate: task.CompletedDate
+  ? task.CompletedDate.split("T")[0]
+  : "",
 });
 
 export const createTask = async (
@@ -49,7 +52,8 @@ export const updateTask = async (
   description: string,
   priority: string,
   dueDate: string,
-  status: string
+  status: string,
+  completedDate: string
 ) => {
   await axios.put(`${API}/${id}`, {
     title,
@@ -57,6 +61,7 @@ export const updateTask = async (
     priority,
     dueDate,
     status,
+    completedDate
   });
 };
 

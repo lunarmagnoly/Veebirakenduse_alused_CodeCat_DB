@@ -36,7 +36,7 @@ const App: React.FC = () => {
   const [newDeadline, setNewDeadline] = useState('');
   const [newPriority, setNewPriority] = useState<Priority>('medium');
 
-  // Uue projekti lisamine
+  // Uue projekti lisamine Reacti ja MSSQL andmebaasi
   const addToDo = async () => {
     if (!newTitle.trim()) return;
 
@@ -69,17 +69,31 @@ const App: React.FC = () => {
     setIsFormOpen(false);
   };
 
-  // Projekti kustutamine
+  // Projekti kustutamine Reactist ja andmebaasist
   const deleteToDo = async (id: number) => {
     await deleteTask(id);
 
     setToDos(toDos.filter(toDo => toDo.id !== id));
   };
 
-  // Projekti staatuse muutmine
-  const changeStatus = (id: number, newStatus: Status) => {
+  // Projekti staatuse muutmine Reactis ja andmebaasis
+  const changeStatus = async (id: number, newStatus: Status) => {
     // Kui projekt liigub Done veergu, salvestame lõpetamise kuupäeva
     const today = new Date().toISOString().split('T')[0];
+
+    const currentTask = toDos.find(toDo => toDo.id === id);
+
+    if (!currentTask) return;
+
+    await updateTask(
+      id,
+      currentTask.text,
+      currentTask.description,
+      currentTask.priority,
+      currentTask.deadline,
+      newStatus,
+      newStatus === 'done' ? today : ''
+    );
 
     setToDos(
       toDos.map(toDo =>
@@ -105,19 +119,20 @@ const App: React.FC = () => {
     );
   };
 
-  // Projekti andmete muutmine
+  // Projekti andmete uuendamine Reactis ja andmebaasis
   const editToDo = async (id: number, updatedProject: UpdatedProject) => {
     const currentTask = toDos.find(toDo => toDo.id === id);
 
     if (!currentTask) return;
-
+    // Saadame uuendatud andmed backend API kaudu andmebaasi
     await updateTask(
       id,
       updatedProject.text ?? currentTask.text,
       updatedProject.description ?? currentTask.description,
       updatedProject.priority ?? currentTask.priority,
       updatedProject.deadline ?? currentTask.deadline,
-      currentTask.status
+      currentTask.status,
+      currentTask.completedDate
     );
     setToDos(
       toDos.map(toDo =>
