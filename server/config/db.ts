@@ -1,7 +1,6 @@
-
 const dbConfig = {
   connectionString:
-    "Driver={ODBC Driver 17 for SQL Server};Server=localhost,57239;Database=CodeCatDB;Trusted_Connection=Yes;TrustServerCertificate=Yes;",
+    "Driver={ODBC Driver 17 for SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=CodeCatDB;Trusted_Connection=Yes;",
   driver: "msnodesqlv8",
 };
 
